@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Love Universe ❤️</title>
+
+<style>
+html,body{
+margin:0;
+padding:0;
+font-family:'Poppins',sans-serif;
+background:black;
+color:white;
+overflow-x:hidden;
+}
+
+/* STARFIELD */
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-1;
+}
+
+/* GAME SECTION */
+#gameSection{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+#game{
+display:grid;
+grid-template-columns:repeat(4,70px);
+gap:15px;
+perspective:1200px;
+}
+
+/* CARD */
+.card{
+width:70px;
+height:90px;
+position:relative;
+transform-style:preserve-3d;
+transition:transform .6s;
+cursor:pointer;
+}
+
+.card.flip{
+transform:rotateY(180deg);
+}
+
+.face{
+position:absolute;
+width:100%;
+height:100%;
+border-radius:12px;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:28px;
+backface-visibility:hidden;
+}
+
+.front{
+background:linear-gradient(135deg,#220000,#440000);
+box-shadow:0 0 10px crimson;
+}
+
+.back{
+background:linear-gradient(135deg,#ff4d6d,#b3003c);
+transform:rotateY(180deg);
+box-shadow:0 0 20px #ff4d6d;
+}
+
+/* FINAL SECTION */
+#finalSection{
+min-height:100vh;
+padding:40px 20px;
+display:none;
+}
+
+#letter{
+max-width:700px;
+margin:auto;
+padding:40px;
+background:rgba(20,20,20,0.95);
+border-radius:25px;
+box-shadow:0 0 60px rgba(255,215,0,0.5);
+animation:fadeIn 1.2s ease forwards;
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(20px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+h1{
+color:gold;
+text-align:center;
+margin-bottom:25px;
+}
+
+p{
+line-height:1.8;
+margin-bottom:18px;
+color:#f0f0f0;
+font-size:16px;
+}
+
+.light{
+position:fixed;
+top:50%;
+left:50%;
+width:20px;
+height:20px;
+background:gold;
+border-radius:50%;
+box-shadow:0 0 150px gold;
+animation:burst 1s forwards;
+}
+
+@keyframes burst{
+to{
+transform:scale(40);
+opacity:0;
+}
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="stars"></canvas>
+
+<section id="gameSection">
+<div id="game"></div>
+</section>
+
+<section id="finalSection">
+<div id="letter">
+
+<h1>Happy 2nd Month Anniversary ❤️</h1>
+
+<p>Happy 2nd month anniversary and Happy Valentine’s Day to my sweetest wifey.</p>
+
+<p>I can’t stop thinking about you. It feels really special when I think that you are mine — mine only.</p>
+
+<p>I’m truly grateful to have you in my life. You make me feel so special and so loved.</p>
+
+<p>I know you understand me so well. I just don’t always express it. Sometimes when I think about how much you do for me, I feel like I’m not showing you enough love.</p>
+
+<p>But I love you to the moon and back.</p>
+
+<p>I want you to always be with me — loving each other with kindness, with a heart full of joy, and one day even with our kids.</p>
+
+<p>Even when we are angry, I’m still grateful that you are in my life. You give me so much joy and happiness. Whenever you are close to me, I feel like I have everything.</p>
+
+<p>Loving you always feels like it’s still not enough. I can never stop loving you, babe.</p>
+
+<p>I want to love you even after death, even after this life.</p>
+
+<p>You once asked me why I love you. I love you because you make me feel truly seen and supported.</p>
+
+<p>I love how brave you are. And when you said you would protect me — I smiled, because of course I will protect you too.</p>
+
+<p>I love the way I feel when I’m around you — happier, calmer, and more alive.</p>
+
+<p>Babe, you are my everything — my wife, my girlfriend, my best friend, and my home.</p>
+
+<p>I can’t even imagine life without you. Without you, there is no point in living.</p>
+
+<p>I want to love your family as my own family. I want to respect and love your dad as my own.</p>
+
+<p><strong>I love you chalaaaaa ante chalaaaaaaaa ❤️❤️❤️</strong></p>
+
+<p style="text-align:center;margin-top:30px;color:gold;">
+From your dearest hubby,<br>
+Mackwin Maxin ❤️❤️
+</p>
+
+</div>
+</section>
+
+<script>
+
+/* STARFIELD */
+const canvas=document.getElementById("stars");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let stars=[];
+for(let i=0;i<120;i++){
+stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.2});
+}
+
+function draw(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+ctx.fillStyle="white";
+stars.forEach(s=>{
+ctx.beginPath();
+ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+ctx.fill();
+});
+requestAnimationFrame(draw);
+}
+draw();
+
+/* MEMORY GAME */
+const emojis=["❤️","🌙","🌹","⭐","💖","💛"];
+let cards=[...emojis,...emojis];
+cards.sort(()=>0.5-Math.random());
+
+const game=document.getElementById("game");
+let first=null, lock=false, matches=0;
+
+cards.forEach(symbol=>{
+let card=document.createElement("div");
+card.className="card";
+card.innerHTML=`<div class="face front"></div><div class="face back">${symbol}</div>`;
+
+card.onclick=()=>{
+if(lock||card===first||card.classList.contains("flip")) return;
+card.classList.add("flip");
+
+if(!first){
+first=card;
+}else{
+if(first.querySelector(".back").textContent===symbol){
+matches++;
+first=null;
+if(matches===6) setTimeout(showFinal,600);
+}else{
+lock=true;
+setTimeout(()=>{
+card.classList.remove("flip");
+first.classList.remove("flip");
+first=null;
+lock=false;
+},600);
+}
+}
+};
+game.appendChild(card);
+});
+
+function showFinal(){
+let flash=document.createElement("div");
+flash.className="light";
+document.body.appendChild(flash);
+
+setTimeout(()=>{
+flash.remove();
+document.getElementById("gameSection").style.display="none";
+document.getElementById("finalSection").style.display="block";
+window.scrollTo({top:0,behavior:"smooth"});
+},800);
+}
+
+</script>
+
+</body>
+</html>
