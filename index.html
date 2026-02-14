@@ -1,482 +1,706 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Valentine Experience ❤️</title>
 
 <style>
-body{
-margin:0;
-font-family:'Poppins',sans-serif;
-background:black;
-color:white;
-overflow-x:hidden;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* ================= PAGE SYSTEM ================= */
-
-.page{
-min-height:100vh;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-padding:60px 20px;
+body {
+  font-family: 'Poppins', sans-serif;
+  background: black;
+  color: white;
+  overflow-x: hidden;
+  min-height: 100vh;
 }
 
-/* ================= MEMORY GAME ================= */
-
-#gamePage{
-background:radial-gradient(circle at center,#450000,#000);
+/* ================= PAGES ================= */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  transition: opacity 0.8s ease;
 }
 
-#gameTitle{
-color:gold;
-font-size:30px;
-margin-bottom:30px;
-text-shadow:0 0 15px gold;
+/* ================= GAME PAGE ================= */
+#gamePage {
+  background: radial-gradient(circle at center, #2a0000, #000);
 }
 
-#game{
-display:grid;
-grid-template-columns:repeat(4,85px);
-gap:18px;
-perspective:1000px;
+#gameTitle {
+  font-size: 3rem;
+  color: gold;
+  margin-bottom: 40px;
+  font-family: 'Dancing Script', cursive;
+  text-shadow: 0 0 20px gold, 0 0 40px #ff4d6d;
 }
 
-.card{
-width:85px;
-height:105px;
-position:relative;
-transform-style:preserve-3d;
-transition:transform .5s;
-cursor:pointer;
+#game {
+  display: grid;
+  grid-template-columns: repeat(4, 85px);
+  gap: 15px;
+  perspective: 1000px;
 }
 
-.card.flip{
-transform:rotateY(180deg);
+.card {
+  width: 85px;
+  height: 105px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+  cursor: pointer;
 }
 
-.face{
-position:absolute;
-width:100%;
-height:100%;
-border-radius:16px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:28px;
-backface-visibility:hidden;
+.card.flip {
+  transform: rotateY(180deg);
 }
 
-.front{
-background:linear-gradient(135deg,#600000,#a00000);
-box-shadow:0 0 25px crimson;
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  backface-visibility: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
 }
 
-.back{
-background:linear-gradient(135deg,#ff4d6d,#ff0055);
-transform:rotateY(180deg);
-box-shadow:0 0 35px hotpink;
+.card-front {
+  background: linear-gradient(135deg, #8b0000, #4a0000);
+  border: 2px solid #ff4d6d;
 }
 
-/* ================= TEXT PAGE ================= */
-
-#textPage{
-display:none;
-background:radial-gradient(circle at center,#180000,#000);
-position:relative;
-overflow:hidden;
+.card-front::after {
+  content: "?";
+  font-size: 2.5rem;
+  color: rgba(255,255,255,0.8);
 }
 
-#textCard{
-max-width:850px;
-background:rgba(20,0,0,0.95);
-padding:70px;
-border-radius:30px;
-box-shadow:0 0 80px crimson;
-position:relative;
-z-index:2;
-}
-
-#textCard h1{
-text-align:center;
-font-size:38px;
-background:linear-gradient(90deg,gold,white,gold);
-background-size:200%;
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-animation:shine 4s linear infinite;
-margin-bottom:50px;
-}
-
-@keyframes shine{
-0%{background-position:0%;}
-100%{background-position:200%;}
-}
-
-/* WORD GLOW */
-.word{
-display:inline-block;
-margin-right:6px;
-animation:wordGlow 2.5s ease-in-out infinite alternate;
-}
-
-@keyframes wordGlow{
-from{text-shadow:0 0 4px rgba(255,255,255,0.2);}
-to{text-shadow:0 0 12px gold;}
-}
-
-/* Highlight strong lines */
-.highlight{
-color:gold;
-animation:pulse 2s infinite alternate;
-}
-
-@keyframes pulse{
-from{text-shadow:0 0 8px gold;}
-to{text-shadow:0 0 20px gold;}
-}
-
-.para{
-line-height:2;
-margin-bottom:26px;
-font-size:17px;
-opacity:0;
-transform:translateY(30px);
-animation:fadeUp 1s forwards;
-}
-
-@keyframes fadeUp{
-to{opacity:1;transform:translateY(0);}
-}
-
-/* Roses */
-.rose{
-position:absolute;
-top:-50px;
-font-size:28px;
-animation:fall linear infinite;
-opacity:1;
-pointer-events:none;
-z-index:1;
-}
-
-@keyframes fall{
-to{transform:translateY(120vh) rotate(360deg);}
-}
-
-#surprise2{
-margin-top:100px;
-font-size:24px;
-color:gold;
-cursor:pointer;
-text-shadow:0 0 10px gold;
+.card-back {
+  background: linear-gradient(135deg, #ff4d6d, #b3003c);
+  border: 2px solid gold;
+  transform: rotateY(180deg);
+  color: white;
 }
 
 /* ================= EGG PAGE ================= */
-
-#eggPage{
-display:none;
-background:black;
+#eggPage {
+  display: none;
+  background: radial-gradient(circle at center, #0a0a0a, #000);
+  position: relative;
+  overflow: hidden;
 }
 
-#egg{
-width:240px;
-height:310px;
-background:radial-gradient(circle at 50% 40%, #fff8dc, #f5deb3);
-border-radius:50% 50% 45% 45%;
-box-shadow:0 0 60px gold;
-cursor:pointer;
-animation:eggFloat 3s ease-in-out infinite alternate;
+#eggContainer {
+  cursor: pointer;
+  transition: transform 0.3s;
 }
 
-@keyframes eggFloat{
-from{transform:translateY(0);}
-to{transform:translateY(-18px);}
+#eggContainer:hover {
+  transform: scale(1.05);
 }
 
-/* ================= PUZZLE ================= */
-
-#puzzlePage{
-display:none;
-background:black;
-position:relative;
+#egg {
+  width: 240px;
+  height: 320px;
+  background: radial-gradient(circle at 50% 35%, #fff8e7, #f0d8b0, #d2a86c);
+  border-radius: 50% 50% 45% 45%;
+  box-shadow: 
+    0 20px 40px rgba(0,0,0,0.8),
+    0 0 100px gold,
+    inset 0 -20px 20px rgba(0,0,0,0.3),
+    inset 0 20px 30px rgba(255,255,240,0.6);
+  animation: eggFloat 3s ease-in-out infinite alternate;
+  position: relative;
+  border: 2px solid rgba(255,215,0,0.5);
 }
 
-#puzzle{
-width:330px;
-height:330px;
-display:grid;
-grid-template-columns:repeat(3,1fr);
-grid-template-rows:repeat(3,1fr);
-gap:2px;
+@keyframes eggFloat {
+  from { transform: translateY(0); }
+  to { transform: translateY(-20px); }
 }
 
-.piece{
-background-size:330px 330px;
-cursor:pointer;
-transition:.2s;
+.egg-text {
+  margin-top: 30px;
+  color: gold;
+  font-size: 1.3rem;
+  text-shadow: 0 0 15px gold;
+  animation: pulse 2s infinite;
 }
 
-.piece.correct{
-box-shadow:0 0 25px gold;
+@keyframes pulse {
+  0%,100% { opacity: 0.7; }
+  50% { opacity: 1; }
 }
 
-/* Celebration */
-#celebration{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:radial-gradient(circle,gold,transparent);
-display:none;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-color:white;
-font-size:40px;
-z-index:999;
-animation:flash 1s forwards;
+/* Full screen boom overlay */
+.boom-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, gold, orange, red, black);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: boomFade 1.5s forwards;
+  pointer-events: none;
 }
 
-@keyframes flash{
-from{opacity:0;}
-to{opacity:1;}
+@keyframes boomFade {
+  0% { opacity: 1; transform: scale(0.5); }
+  50% { opacity: 1; transform: scale(1.5); }
+  100% { opacity: 0; transform: scale(3); }
 }
 
-.confetti{
-position:fixed;
-font-size:28px;
-animation:confettiFall 3s linear forwards;
+.boom-text {
+  font-size: 8rem;
+  color: white;
+  text-shadow: 0 0 50px gold, 0 0 100px orange;
+  font-weight: bold;
+  animation: boomText 1.5s forwards;
 }
 
-@keyframes confettiFall{
-to{transform:translateY(100vh);opacity:0;}
+@keyframes boomText {
+  0% { transform: scale(0.5); opacity: 0; }
+  30% { transform: scale(1.2); opacity: 1; }
+  70% { transform: scale(1.5); opacity: 1; }
+  100% { transform: scale(3); opacity: 0; }
 }
 
+/* ================= PUZZLE PAGE (12 PIECES) ================= */
+#puzzlePage {
+  display: none;
+  background: radial-gradient(circle at center, #2a0f0f, #000);
+  padding: 40px 20px;
+}
+
+#puzzleTitle {
+  font-size: 3rem;
+  color: gold;
+  margin-bottom: 30px;
+  font-family: 'Dancing Script', cursive;
+  text-shadow: 0 0 30px gold;
+}
+
+#puzzle {
+  width: 480px;
+  height: 360px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 3px;
+  border: 4px solid gold;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 60px rgba(255,215,0,0.5);
+  margin-bottom: 20px;
+}
+
+.piece {
+  background-image: url('https://i.imgur.com/gblI6k3.jpeg');
+  background-size: 480px 360px;
+  cursor: pointer;
+  transition: 0.2s;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.piece:hover {
+  filter: brightness(1.2);
+  transform: scale(0.98);
+}
+
+.piece.correct {
+  box-shadow: inset 0 0 15px gold;
+  border: 2px solid gold;
+}
+
+#puzzleMessage {
+  font-size: 1.8rem;
+  color: gold;
+  font-family: 'Dancing Script', cursive;
+  text-shadow: 0 0 20px gold;
+  min-height: 60px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* ===== I SOLVED THE PUZZLE BUTTON ===== */
+#solveButton {
+  background: linear-gradient(135deg, gold, #ff4d6d);
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  font-size: 1.8rem;
+  font-family: 'Dancing Script', cursive;
+  border-radius: 60px;
+  cursor: pointer;
+  box-shadow: 0 0 30px gold;
+  transition: all 0.3s;
+  display: none;
+  margin-top: 20px;
+  border: 2px solid white;
+}
+
+#solveButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 50px gold;
+  background: linear-gradient(135deg, #ff4d6d, gold);
+}
+
+/* ===== VINTAGE LETTER PAGE (AFTER PUZZLE) ===== */
+#letterPage {
+  display: none;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a0f0a, #2a1a0f);
+  position: relative;
+  overflow: hidden;
+  padding: 60px 20px;
+}
+
+/* Aged paper effect */
+.vintage-paper {
+  max-width: 800px;
+  width: 100%;
+  background: #f4e4c1;
+  background-image: 
+    linear-gradient(45deg, rgba(200,180,150,0.3) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(200,180,150,0.3) 25%, transparent 25%);
+  background-size: 60px 60px;
+  padding: 60px 50px;
+  border-radius: 20px 40px 20px 40px;
+  box-shadow: 
+    0 30px 50px rgba(0,0,0,0.7),
+    0 0 0 2px #c0a070,
+    0 0 0 5px #8b7355,
+    inset 0 0 30px rgba(0,0,0,0.2);
+  position: relative;
+  z-index: 5;
+  transform: rotate(0.5deg);
+  border: 1px solid #e5d5b5;
+}
+
+/* Burned edges effect */
+.vintage-paper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 20px 40px 20px 40px;
+  box-shadow: inset 0 0 50px rgba(100,70,40,0.3);
+  pointer-events: none;
+}
+
+/* Ink stamp effect */
+.vintage-paper::after {
+  content: '❤️';
+  position: absolute;
+  bottom: 30px;
+  right: 40px;
+  font-size: 60px;
+  opacity: 0.15;
+  transform: rotate(-10deg);
+}
+
+.letter-content {
+  position: relative;
+  z-index: 6;
+}
+
+.letter-content h1 {
+  font-family: 'Dancing Script', cursive;
+  font-size: 3.5rem;
+  color: #4a2c1a;
+  text-align: center;
+  margin-bottom: 40px;
+  text-shadow: 2px 2px 0 #d4b48c;
+  border-bottom: 2px dashed #b09060;
+  padding-bottom: 20px;
+}
+
+.letter-content p {
+  font-family: 'Times New Roman', serif;
+  font-size: 1.2rem;
+  line-height: 2;
+  margin-bottom: 25px;
+  color: #3a2a1a;
+  text-shadow: 1px 1px 0 rgba(255,255,240,0.5);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: letterFade 0.8s forwards;
+}
+
+@keyframes letterFade {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.letter-content strong {
+  color: #8b0000;
+  font-size: 1.4rem;
+}
+
+.letter-signature {
+  text-align: right;
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.8rem;
+  color: #5a3a1a;
+  margin-top: 40px;
+  border-top: 1px dashed #b09060;
+  padding-top: 20px;
+}
+
+/* Falling roses AND diamonds */
+.fall-item {
+  position: absolute;
+  animation: fall linear infinite;
+  z-index: 2;
+  pointer-events: none;
+}
+
+@keyframes fall {
+  0% { transform: translateY(-10vh) rotate(0deg); opacity: 0.8; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0.2; }
+}
+
+/* ================= FLOATING HEARTS ================= */
+.floating-heart {
+  position: fixed;
+  font-size: 24px;
+  pointer-events: none;
+  z-index: 9999;
+  animation: floatHeart 4s linear forwards;
+}
+
+@keyframes floatHeart {
+  0% { transform: translateY(0) scale(0.8); opacity: 0.8; }
+  100% { transform: translateY(-120vh) scale(1.5); opacity: 0; }
+}
 </style>
 </head>
-
 <body>
 
-<audio id="bgMusic" loop>
-<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4f1c48f1a6.mp3?filename=romantic-background-112191.mp3" type="audio/mp3">
-</audio>
-
+<!-- GAME PAGE -->
 <div id="gamePage" class="page">
-<div id="gameTitle">Match The Hearts ❤️</div>
-<div id="game"></div>
+  <div id="gameTitle">👑 Match The Hearts 👑</div>
+  <div id="game"></div>
 </div>
 
-<div id="textPage" class="page">
-<div id="textCard">
-<h1>Happy 2nd Month Anniversary ❤️</h1>
-<div id="textContent"></div>
-</div>
-<div id="surprise2">Go To Surprise 2 ❤️</div>
-</div>
-
+<!-- EGG PAGE -->
 <div id="eggPage" class="page">
-<div id="egg"></div>
+  <div id="eggContainer">
+    <div id="egg"></div>
+  </div>
+  <div class="egg-text">✨ Tap the egg ✨</div>
 </div>
 
+<!-- PUZZLE PAGE (12 PIECES) -->
 <div id="puzzlePage" class="page">
-<h2>Final Memory 🧩</h2>
-<div id="puzzle"></div>
+  <div id="puzzleTitle">🧩 Solve The Puzzle 🧩</div>
+  <div id="puzzle"></div>
+  <div id="puzzleMessage"></div>
+  <button id="solveButton">✨ I Solved The Puzzle ✨</button>
 </div>
 
-<div id="celebration">
-<div>Forever Us ❤️</div>
+<!-- VINTAGE LETTER PAGE -->
+<div id="letterPage" class="page">
+  <div class="vintage-paper">
+    <div class="letter-content">
+      <h1>Happy 2nd Month Anniversary ❤️</h1>
+      
+      <p>Happy 2nd month anniversary and Happy Valentine's Day to my sweetest wifey.</p>
+      <p>I can't stop thinking about you. It feels really special when I think that you are mine — mine only.</p>
+      <p>I'm truly grateful to have you in my life. You make me feel so special and so loved.</p>
+      <p>I know you understand me so well. I just don't always express it. Sometimes when I think about how much you do for me, I feel like I'm not showing you enough love.</p>
+      <p>But I love you to the moon and back.</p>
+      <p>I want you to always be with me — loving each other with kindness, with a heart full of joy, and one day even with our kids.</p>
+      <p>Even when we are angry, I'm still grateful that you are in my life. You give me so much joy and happiness. Whenever you are close to me, I feel like I have everything.</p>
+      <p>Loving you always feels like it's still not enough. I can never stop loving you, babe.</p>
+      <p>I want to love you even after death, even after this life.</p>
+      <p>You once asked me why I love you. I love you because you make me feel truly seen and supported.</p>
+      <p>I love how brave you are. And when you said you would protect me — I smiled, because of course I will protect you too.</p>
+      <p>I love the way I feel when I'm around you — happier, calmer, and more alive.</p>
+      <p>Babe, you are my everything — my wife, my girlfriend, my best friend, and my home.</p>
+      <p>I can't even imagine life without you. Without you, there is no point in living.</p>
+      <p>I want to love your family as my own family. I want to respect and love your dad as my own.</p>
+      <p><strong>I love you chalaaaaa ante chalaaaaaaaa ❤️❤️❤️</strong></p>
+      
+      <div class="letter-signature">
+        From your dearest hubby,<br>
+        Mackwin Maxin ❤️❤️
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
+(function() {
+  // ========== MEMORY GAME ==========
+  const emojis = ['❤️', '🌙', '🌹', '⭐', '💖', '💛'];
+  let cards = [...emojis, ...emojis];
+  
+  // Shuffle
+  for(let i = cards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [cards[i], cards[j]] = [cards[j], cards[i]];
+  }
 
-/* Preload image */
-const puzzleImageURL="https://i.imgur.com/gblI6k3.jpeg";
-new Image().src=puzzleImageURL;
+  const game = document.getElementById('game');
+  let flippedCards = [];
+  let matchedPairs = 0;
+  let lockBoard = false;
 
-/* MEMORY GAME */
-const emojis=["❤️","🌙","🌹","⭐","💖","💛"];
-let cards=[...emojis,...emojis];
-cards.sort(()=>0.5-Math.random());
-const game=document.getElementById("game");
-let first=null, lock=false, matches=0;
+  // Create cards
+  cards.forEach((symbol, index) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.symbol = symbol;
+    
+    const front = document.createElement('div');
+    front.className = 'card-face card-front';
+    
+    const back = document.createElement('div');
+    back.className = 'card-face card-back';
+    back.textContent = symbol;
+    
+    card.appendChild(front);
+    card.appendChild(back);
+    
+    card.onclick = function() {
+      if(lockBoard) return;
+      if(this.classList.contains('flip')) return;
+      
+      this.classList.add('flip');
+      flippedCards.push(this);
+      
+      if(flippedCards.length === 2) {
+        lockBoard = true;
+        
+        if(flippedCards[0].dataset.symbol === flippedCards[1].dataset.symbol) {
+          // Match found
+          matchedPairs++;
+          flippedCards = [];
+          lockBoard = false;
+          
+          if(matchedPairs === 6) {
+            setTimeout(() => {
+              document.getElementById('gamePage').style.display = 'none';
+              document.getElementById('eggPage').style.display = 'flex';
+            }, 500);
+          }
+        } else {
+          // No match
+          setTimeout(() => {
+            flippedCards[0].classList.remove('flip');
+            flippedCards[1].classList.remove('flip');
+            flippedCards = [];
+            lockBoard = false;
+          }, 800);
+        }
+      }
+    };
+    
+    game.appendChild(card);
+  });
 
-cards.forEach(symbol=>{
-let card=document.createElement("div");
-card.className="card";
-card.innerHTML=`<div class="face front"></div><div class="face back">${symbol}</div>`;
-card.onclick=()=>{
-if(lock||card===first||card.classList.contains("flip")) return;
-card.classList.add("flip");
-if(!first){first=card;}
-else{
-if(first.querySelector(".back").textContent===symbol){
-matches++; first=null;
-if(matches===6){
-document.getElementById("bgMusic").play();
-setTimeout(()=>{
-document.getElementById("gamePage").style.display="none";
-document.getElementById("textPage").style.display="flex";
-renderText();
-createRoses();
-},800);
-}
-}else{
-lock=true;
-setTimeout(()=>{
-card.classList.remove("flip");
-first.classList.remove("flip");
-first=null; lock=false;
-},600);
-}
-}
-};
-game.appendChild(card);
-});
+  // ========== EGG PAGE WITH FULL SCREEN BOOM ==========
+  const eggContainer = document.getElementById('eggContainer');
+  
+  eggContainer.onclick = function() {
+    // Create full screen boom overlay
+    const boom = document.createElement('div');
+    boom.className = 'boom-overlay';
+    
+    const boomText = document.createElement('div');
+    boomText.className = 'boom-text';
+    boomText.textContent = '💥 BOOM 💥';
+    
+    boom.appendChild(boomText);
+    document.body.appendChild(boom);
+    
+    // Create explosion particles
+    for(let i = 0; i < 60; i++) {
+      setTimeout(() => {
+        const particle = document.createElement('div');
+        particle.style.position = 'fixed';
+        particle.style.left = eggContainer.getBoundingClientRect().left + 120 + (Math.random()*200-100) + 'px';
+        particle.style.top = eggContainer.getBoundingClientRect().top + 160 + (Math.random()*200-100) + 'px';
+        particle.style.fontSize = (Math.random()*30 + 20) + 'px';
+        particle.innerHTML = ['✨', '💫', '🌟', '💥', '⭐', '🔥'][Math.floor(Math.random()*6)];
+        particle.style.transition = 'all 1s';
+        particle.style.position = 'fixed';
+        particle.style.zIndex = '10001';
+        document.body.appendChild(particle);
+        
+        setTimeout(() => {
+          particle.style.transform = `translate(${Math.random()*400-200}px, ${Math.random()*400-200}px) scale(2)`;
+          particle.style.opacity = '0';
+        }, 10);
+        
+        setTimeout(() => particle.remove(), 1000);
+      }, i * 20);
+    }
+    
+    // Go to puzzle page after boom
+    setTimeout(() => {
+      document.getElementById('eggPage').style.display = 'none';
+      document.getElementById('puzzlePage').style.display = 'flex';
+      initPuzzle();
+      boom.remove();
+    }, 1500);
+  };
 
-/* FULL TEXT WORD GLOW */
-function renderText(){
-const fullText=`Happy 2nd month anniversary and Happy Valentine’s Day to my sweetest wifey.
+  // ========== 12-PIECE PUZZLE WITH SOLVE BUTTON ==========
+  let tapCount = 0;
+  const solveButton = document.getElementById('solveButton');
+  
+  function initPuzzle() {
+    const puzzle = document.getElementById('puzzle');
+    puzzle.innerHTML = '';
+    tapCount = 0;
+    solveButton.style.display = 'none';
+    
+    // Create 12 pieces (4x3)
+    for(let r = 0; r < 3; r++) {
+      for(let c = 0; c < 4; c++) {
+        const piece = document.createElement('div');
+        piece.className = 'piece';
+        piece.style.backgroundPosition = `-${c * 120}px -${r * 120}px`; // 480/4=120, 360/3=120
+        piece.dataset.row = r;
+        piece.dataset.col = c;
+        puzzle.appendChild(piece);
+      }
+    }
+    
+    // Shuffle pieces visually
+    const pieces = Array.from(puzzle.children);
+    for(let i = pieces.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      puzzle.insertBefore(pieces[j], pieces[i]);
+    }
+    
+    let selected = null;
+    
+    puzzle.onclick = function(e) {
+      if(!e.target.classList.contains('piece')) return;
+      
+      // Increment tap counter
+      tapCount++;
+      
+      if(!selected) {
+        selected = e.target;
+        selected.style.outline = '3px solid gold';
+      } else {
+        // Swap background positions
+        const tempPos = selected.style.backgroundPosition;
+        selected.style.backgroundPosition = e.target.style.backgroundPosition;
+        e.target.style.backgroundPosition = tempPos;
+        
+        selected.style.outline = 'none';
+        selected = null;
+        
+        // Check if solved
+        const allPieces = document.querySelectorAll('.piece');
+        let correct = 0;
+        
+        allPieces.forEach((piece, index) => {
+          const row = Math.floor(index / 4);
+          const col = index % 4;
+          const expected = `-${col * 120}px -${row * 120}px`;
+          
+          if(piece.style.backgroundPosition === expected) {
+            correct++;
+            piece.classList.add('correct');
+          } else {
+            piece.classList.remove('correct');
+          }
+        });
+        
+        document.getElementById('puzzleMessage').innerText = `Correct: ${correct}/12`;
+        
+        if(correct === 12) {
+          document.getElementById('puzzleMessage').innerHTML = '❤️ PUZZLE COMPLETE! ❤️';
+          
+          // Celebration
+          for(let i = 0; i < 60; i++) {
+            setTimeout(() => {
+              const heart = document.createElement('div');
+              heart.className = 'floating-heart';
+              heart.innerHTML = '❤️';
+              heart.style.left = Math.random() * 100 + 'vw';
+              heart.style.top = '100vh';
+              heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+              document.body.appendChild(heart);
+              setTimeout(() => heart.remove(), 4000);
+            }, i * 30);
+          }
+        }
+      }
+      
+      // Show solve button after 6 taps
+      if(tapCount >= 6) {
+        solveButton.style.display = 'block';
+      }
+    };
+  }
 
-I can’t stop thinking about you. It feels really special when I think that you are mine — mine only.
+  // Solve button click - goes to letter page
+  solveButton.onclick = function() {
+    document.getElementById('puzzlePage').style.display = 'none';
+    document.getElementById('letterPage').style.display = 'flex';
+    startFallingItems();
+  };
 
-I’m truly grateful to have you in my life. You make me feel so special and so loved.
+  // ========== ROSES AND DIAMONDS FALLING ==========
+  function startFallingItems() {
+    // Roses and diamonds fall continuously
+    setInterval(() => {
+      const isRose = Math.random() > 0.5;
+      const item = document.createElement('div');
+      item.className = 'fall-item';
+      item.innerHTML = isRose ? '🌹' : '💎';
+      item.style.left = Math.random() * 100 + 'vw';
+      item.style.animationDuration = (Math.random() * 5 + 4) + 's';
+      item.style.fontSize = (Math.random() * 20 + 20) + 'px';
+      item.style.opacity = '0.7';
+      document.getElementById('letterPage').appendChild(item);
+      
+      setTimeout(() => item.remove(), 9000);
+    }, 300);
+  }
 
-I know you understand me so well. I just don’t always express it. Sometimes when I think about how much you do for me, I feel like I’m not showing you enough love.
-
-But I love you to the moon and back.
-
-I want you to always be with me — loving each other with kindness, with a heart full of joy, and one day even with our kids.
-
-Even when we are angry, I’m still grateful that you are in my life. You give me so much joy and happiness. Whenever you are close to me, I feel like I have everything.
-
-Loving you always feels like it’s still not enough. I can never stop loving you, babe.
-
-I want to love you even after death, even after this life.
-
-You once asked me why I love you. I love you because you make me feel truly seen and supported.
-
-I love how brave you are. And when you said you would protect me — I smiled, because of course I will protect you too.
-
-I love the way I feel when I’m around you — happier, calmer, and more alive.
-
-Babe, you are my everything — my wife, my girlfriend, my best friend, and my home.
-
-I can’t even imagine life without you. Without you, there is no point in living.
-
-I want to love your family as my own family. I want to respect and love your dad as my own.
-
-I love you chalaaaaa ante chalaaaaaaaa ❤️❤️❤️
-
-From your dearest hubby,
-Mackwin Maxin ❤️❤️`;
-
-let container=document.getElementById("textContent");
-fullText.split("\n\n").forEach((para,i)=>{
-let div=document.createElement("div");
-div.className="para";
-div.style.animationDelay=(i*0.4)+"s";
-
-para.split(" ").forEach(word=>{
-let span=document.createElement("span");
-span.className="word";
-span.textContent=word;
-if(word.includes("love") || word.includes("Love")){
-span.classList.add("highlight");
-}
-div.appendChild(span);
-});
-
-container.appendChild(div);
-});
-}
-
-/* Roses */
-function createRoses(){
-for(let i=0;i<35;i++){
-let r=document.createElement("div");
-r.className="rose";
-r.textContent="🌹";
-r.style.left=Math.random()*100+"vw";
-r.style.animationDuration=(Math.random()*4+4)+"s";
-document.getElementById("textPage").appendChild(r);
-}
-}
-
-/* Surprise 2 */
-document.getElementById("surprise2").onclick=function(){
-document.getElementById("textPage").style.display="none";
-document.getElementById("eggPage").style.display="flex";
-};
-
-/* Egg */
-document.getElementById("egg").onclick=function(){
-document.getElementById("eggPage").style.display="none";
-document.getElementById("puzzlePage").style.display="flex";
-};
-
-/* Puzzle */
-const puzzle=document.getElementById("puzzle");
-let pieces=[];
-for(let r=0;r<3;r++){
-for(let c=0;c<3;c++){
-let piece=document.createElement("div");
-piece.className="piece";
-piece.style.backgroundImage=`url('${puzzleImageURL}')`;
-piece.style.backgroundPosition=`-${c*110}px -${r*110}px`;
-pieces.push(piece);
-}
-}
-pieces.sort(()=>0.5-Math.random());
-pieces.forEach(p=>puzzle.appendChild(p));
-
-let selected=null;
-puzzle.addEventListener("click",e=>{
-if(!e.target.classList.contains("piece")) return;
-if(!selected){
-selected=e.target;
-selected.style.outline="2px solid gold";
-}else{
-let temp=selected.style.backgroundPosition;
-selected.style.backgroundPosition=e.target.style.backgroundPosition;
-e.target.style.backgroundPosition=temp;
-selected.style.outline="none";
-selected=null;
-checkPuzzle();
-}
-});
-
-function checkPuzzle(){
-let correct=0;
-document.querySelectorAll(".piece").forEach((piece,i)=>{
-let row=Math.floor(i/3);
-let col=i%3;
-let expected=`-${col*110}px -${row*110}px`;
-if(piece.style.backgroundPosition===expected){
-correct++;
-}
-});
-if(correct===9){
-celebrate();
-}
-}
-
-function celebrate(){
-let c=document.getElementById("celebration");
-c.style.display="flex";
-for(let i=0;i<40;i++){
-let conf=document.createElement("div");
-conf.className="confetti";
-conf.textContent="✨";
-conf.style.left=Math.random()*100+"vw";
-conf.style.top="-20px";
-document.body.appendChild(conf);
-setTimeout(()=>conf.remove(),3000);
-}
-}
+  // ========== INITIAL FALLING ITEMS (background) ==========
+  setInterval(() => {
+    if(document.getElementById('gamePage').style.display !== 'none' ||
+       document.getElementById('eggPage').style.display !== 'none' ||
+       document.getElementById('puzzlePage').style.display !== 'none') {
+      const item = document.createElement('div');
+      item.className = 'fall-item';
+      item.innerHTML = Math.random() > 0.7 ? '🌹' : '✨';
+      item.style.left = Math.random() * 100 + 'vw';
+      item.style.animationDuration = (Math.random() * 6 + 5) + 's';
+      item.style.fontSize = (Math.random() * 20 + 15) + 'px';
+      document.body.appendChild(item);
+      setTimeout(() => item.remove(), 10000);
+    }
+  }, 500);
+})();
 </script>
 
 </body>
